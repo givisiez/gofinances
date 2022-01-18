@@ -7,10 +7,10 @@ export const Container = styled.View`
 `;
 
 export const Header = styled.View`
-  background-color: ${({ theme }) => theme.colors.primary};
-
   width: 100%;
   height: ${RFValue(113)}px;
+
+  background-color: ${({ theme }) => theme.colors.primary};
 
   align-items: center;
   justify-content: flex-end;
@@ -38,5 +38,6 @@ export const TransationsTypes = styled.View`
   justify-content: space-between;
 
   margin-top: 8px;
+  margin-bottom: 16px;
 `;
-
+''
