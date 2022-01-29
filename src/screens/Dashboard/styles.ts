@@ -3,6 +3,7 @@ import { FlatList, FlatListProps } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { DataListProps } from '.';
 
@@ -64,6 +65,9 @@ export const Icon = styled(Feather)`
   color: ${({theme}) => theme.colors.secundary};
   font-size: ${RFValue(24)}px;
 `;
+
+export const LogoutButton = styled(BorderlessButton)``;
+
 
 export const HighlightCards = styled.ScrollView.attrs({
   horizontal: true,

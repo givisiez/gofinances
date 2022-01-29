@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { 
   Modal, 
   TouchableWithoutFeedback, 
@@ -8,14 +9,8 @@ import {
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-
-import { useForm } from 'react-hook-form';
-
-import { Input } from '../../components/Form/Input';
-
-import { Button } from '../../components/Form/Button';
 import { InputForm } from '../../components/Form/InputForm';
-
+import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
 
@@ -34,6 +29,7 @@ export type FormData = {
   [name: string]: any;
   // amount: string;
 }
+
 
 const schema = Yup.object().shape({
   name: Yup
