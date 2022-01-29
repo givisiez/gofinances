@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
 import { 
   Modal, 
   TouchableWithoutFeedback, 
@@ -8,6 +7,10 @@ import {
 } from 'react-native';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
+
+import { useForm } from 'react-hook-form';
 
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
@@ -27,7 +30,7 @@ import {
 
 export type FormData = {
   [name: string]: any;
-  // amount: string;
+  //amount: string,
 }
 
 
@@ -42,8 +45,10 @@ const schema = Yup.object().shape({
   // .required('O valor é obrigatório')
 });
 
-export function Register() {  
-  const [transactionType, seTtransactionType] = useState('');
+export function Register({navigation} : {navigation: any}) {
+  const dataKey = '@gofinances:transactions';
+
+  const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
   const [category, setCategory] = useState({
@@ -54,13 +59,14 @@ export function Register() {
   const { 
     control, 
     handleSubmit,
+    reset,
     formState: { errors } 
   } = useForm({
     resolver: yupResolver(schema)
   });
 
-  function handleTransactionTypeSelect(type: 'up' | 'down') {
-    seTtransactionType(type);
+  function handleTransactionTypeSelect(type: 'positive' | 'negative') {
+    setTransactionType(type);
   }
 
   function handleOpenSelectCategoryModal() {
@@ -71,7 +77,7 @@ export function Register() {
     setCategoryModalOpen(false);
   }
 
-  function handleRegister(form: FormData){
+  async function handleRegister(form: FormData){
     if(!transactionType) {
       return Alert.alert("Obrigatório","Selecione o tipo da transação");
     }
@@ -80,14 +86,55 @@ export function Register() {
       return Alert.alert("Obrigatório","Selecione a categoria");
     }    
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
-      category: category.key
+      type: transactionType,
+      category: category.key,
+      date: new Date()
     }    
-    console.log(data);
+
+    try {      
+      const data = await AsyncStorage.getItem(dataKey);
+      const currentData = data ? JSON.parse(data) : [];
+
+      const dataFormatted = [
+        ...currentData,
+        newTransaction
+      ];
+      
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));  
+
+      reset();
+      setTransactionType('');
+      setCategory({
+        key: 'category',
+        name: 'Categoria'
+      });
+
+      navigation.navigate('Listagem');
+
+    } catch (err) {
+      console.log(err);
+      Alert.alert("Ooops!","Não foi opssível salvar, tente novamente.");
+    }
+
   }
+
+  useEffect(() => {
+    async function loadData() {
+      const data = await AsyncStorage.getItem(dataKey);
+      console.log(JSON.parse(data!));
+    }    
+
+    loadData();
+    
+    // async function resetAllSorage() {
+    //   await AsyncStorage.removeItem(dataKey);
+    // }
+    // resetAllSorage();
+  },[]);
 
   return(
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -118,14 +165,14 @@ export function Register() {
               <TransactionTypeButton
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionTypeSelect('up')}
-                isActive={ transactionType === 'up'}
+                onPress={() => handleTransactionTypeSelect('positive')}
+                isActive={ transactionType === 'positive'}
               />
               <TransactionTypeButton
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionTypeSelect('down')}
-                isActive={ transactionType === 'down'}
+                onPress={() => handleTransactionTypeSelect('negative')}
+                isActive={ transactionType === 'negative'}
               />
             </TransationsTypes>
 
