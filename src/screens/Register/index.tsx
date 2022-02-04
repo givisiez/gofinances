@@ -33,7 +33,6 @@ export type FormData = {
   //amount: string,
 }
 
-
 const schema = Yup.object().shape({
   name: Yup
   .string()
@@ -42,7 +41,7 @@ const schema = Yup.object().shape({
   .number()
   .typeError('Informe um valor numérico')
   .positive('O valor não pode ser negativo')
-  // .required('O valor é obrigatório')
+  .required('O valor é obrigatório')
 });
 
 export function Register({navigation} : {navigation: any}) {

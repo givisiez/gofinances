@@ -43,7 +43,7 @@ interface HighlightData {
 }
 
 export function Dashboard(){
-  const [isLoadin, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
 
@@ -61,7 +61,7 @@ export function Dashboard(){
     return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', {month: 'long'})}`;
   }
 
-  async function loadtransactions(){
+  async function loadTransactions(){
     const dataKey = '@gofinances:transactions';
     const response = await AsyncStorage.getItem(dataKey);
 
@@ -139,17 +139,17 @@ export function Dashboard(){
   }
   
   useEffect(() => {
-    loadtransactions();
+    loadTransactions();
   },[]);
 
   useFocusEffect(useCallback(() => {
-    loadtransactions();
+    loadTransactions();
   },[]));
 
   return (
     <Container>      
       { 
-        isLoadin ? 
+        isLoading ? 
         <LoadContainer>
           <ActivityIndicator 
             color={theme.colors.primary}
