@@ -3,7 +3,9 @@ import { StatusBar } from 'react-native';
 import 'intl';
 import 'react-native-gesture-handler';
 import 'intl/locale-data/jsonp/pt-BR';
-import { NavigationContainer } from '@react-navigation/native';
+// import { NavigationContainer } from '@react-navigation/native';
+
+import { Routes } from './src/routes/';
 
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
@@ -36,14 +38,10 @@ export default function App() {
 
   return (    
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary}/>
-        
-        <AuthProvider>
-          <SignIn/>
-        </AuthProvider>
-
-      </NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor={theme.colors.primary}/>        
+      <AuthProvider>
+        <Routes/>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
