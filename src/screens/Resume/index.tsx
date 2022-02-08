@@ -10,6 +10,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components';
 
+import { useAuth } from '../../hooks/auth';
+
 import { 
   Container,
   Header,
@@ -51,6 +53,7 @@ export function Resume(){
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
 
   const theme = useTheme();
+  const { user } = useAuth();
 
   function handleDataChange(action: 'next' | 'prev') {   
     if(action === 'next') {
@@ -64,7 +67,7 @@ export function Resume(){
 
   async function loadData(){
     setIsLoading(true);
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
@@ -142,49 +145,57 @@ export function Resume(){
               paddingHorizontal: 24,
               paddingBottom: useBottomTabBarHeight(),
             }}
-          > 
+          >
 
-          <MonthSelect>
-            <MonthSelectButton onPress={() => handleDataChange('prev')}>
-              <MonthSelectIcon name="chevron-left"/>        
-            </MonthSelectButton>
+          {
+            totalByCategories.length > 0 ?
+              <>
+                <MonthSelect>
+                  <MonthSelectButton onPress={() => handleDataChange('prev')}>
+                    <MonthSelectIcon name="chevron-left"/>        
+                  </MonthSelectButton>
 
-            <Month>{ format(selectedDate, 'MMMM, yyyy', { locale: ptBR }) }</Month>
+                  <Month>{ format(selectedDate, 'MMMM, yyyy', { locale: ptBR }) }</Month>
 
-            <MonthSelectButton onPress={() => handleDataChange('next')}>
-              <MonthSelectIcon name="chevron-right"/>        
-            </MonthSelectButton>
-          </MonthSelect>
+                  <MonthSelectButton onPress={() => handleDataChange('next')}>
+                    <MonthSelectIcon name="chevron-right"/>        
+                  </MonthSelectButton>
+                </MonthSelect>
 
-            <ChartContainer>
-              <VictoryPie
-                data={totalByCategories}
-                colorScale={totalByCategories.map(category => category.color)}
-                style={{ 
-                  labels: { 
-                    fontSize: RFValue(18),
-                    fontWeight: 'bold',
-                    fill: theme.colors.shape
-                  }
-                }}
-                labelRadius={50}
-                x="percent"
-                y="total"
-              />
-            </ChartContainer>
-
-          {         
-            totalByCategories.length === 0 
-            ? <Message>Nenhum lançamento</Message> :
-
-            totalByCategories.map(item => (
-              <HistoryCard
-                key={item.key} 
-                title={item.name}
-                amount={item.totalFormatted}
-                color={item.color}
-              />
-            ))
+                <ChartContainer>
+                  <VictoryPie
+                    data={totalByCategories}
+                    colorScale={totalByCategories.map(category => category.color)}
+                    style={{ 
+                      labels: { 
+                        fontSize: RFValue(18),
+                        fontWeight: 'bold',
+                        fill: theme.colors.shape
+                      }
+                    }}
+                    labelRadius={50}
+                    x="percent"
+                    y="total"
+                  />
+                </ChartContainer>
+              </>
+            : null
+          } 
+       
+          {    
+            totalByCategories.length > 0 
+            ? 
+              totalByCategories.map(item => (
+                <HistoryCard
+                  key={item.key} 
+                  title={item.name}
+                  amount={item.totalFormatted}
+                  color={item.color}
+                />
+              ))
+             
+            :
+              <Message>Nenhum lançamento cadastrado</Message>
           }
         </Content>
       }

@@ -11,6 +11,7 @@ import AsyncStorage  from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 
 import { useForm } from 'react-hook-form';
+import { useAuth } from '../../hooks/auth';
 
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
@@ -28,6 +29,7 @@ import {
   TransationsTypes
 } from './styles';
 
+
 export type FormData = {
   [name: string]: any;
   //amount: string,
@@ -44,11 +46,12 @@ const schema = Yup.object().shape({
   .required('O valor é obrigatório')
 });
 
-export function Register({navigation} : {navigation: any}) {
-  const dataKey = '@gofinances:transactions';
+export function Register({navigation} : {navigation: any}) {  
 
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+
+  const { user } = useAuth();
 
   const [category, setCategory] = useState({
     key: 'category',
@@ -94,7 +97,8 @@ export function Register({navigation} : {navigation: any}) {
       date: new Date()
     }    
 
-    try {      
+    try {   
+      const dataKey = `@gofinances:transactions_user:${user.id}`;
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
 

@@ -32,6 +32,8 @@ export const Message = styled.Text`
   font-family: ${({theme}) => theme.fonts.regular};
   font-size: ${RFValue(15)}px;
   color: ${({ theme }) => theme.colors.attention_ligth};
+  
+  margin-top: 20px;
 `;
 
 export const ChartContainer = styled.View`

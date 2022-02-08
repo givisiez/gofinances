@@ -90,6 +90,7 @@ export const Title = styled.Text`
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
 
+  margin-top: 20px;
   margin-bottom: 16px;
 `;
 
@@ -104,4 +105,12 @@ export const LoadContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`;
+
+export const Message = styled.Text`
+  font-family: ${({theme}) => theme.fonts.regular};
+  font-size: ${RFValue(15)}px;
+  color: ${({ theme }) => theme.colors.attention_ligth};
+
+  margin-top: 20px;
 `;
