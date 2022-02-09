@@ -3,7 +3,7 @@
     "name": "gofinances",
     "slug": "gofinances",
     "scheme": "gofinances",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "platforms": [
       "ios",
       "android"
@@ -19,7 +19,14 @@
       "**/*"
     ],
     "android": {
-      "package": "com.givisiez.gofinances"
+      "package": "com.givisiez.gofinances",
+      "adaptiveIcon": {       
+        "foregroundImage": "./src/assets/icon-fg.png",
+        "backgroundColor": "#5636D3"
+      }
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
     },
     "ios": {
       "bundleIdentifier": "com.givisiez.gofinances"
