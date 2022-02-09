@@ -55,7 +55,7 @@ export function Register({navigation} : {navigation: any}) {
 
   const [category, setCategory] = useState({
     key: 'category',
-    name: 'Categoria'
+    name: 'Categorias'
   });
 
   const { 
@@ -113,7 +113,7 @@ export function Register({navigation} : {navigation: any}) {
       setTransactionType('');
       setCategory({
         key: 'category',
-        name: 'Categoria'
+        name: 'Categorias'
       });
 
       navigation.navigate('Listagem');
