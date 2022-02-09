@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "GoFinances",
+    "name": "gofinances",
     "slug": "gofinances",
     "scheme": "gofinances",
     "version": "1.0.1",
@@ -20,6 +20,9 @@
     ],
     "android": {
       "package": "com.givisiez.gofinances"
+    },
+    "ios": {
+      "bundleIdentifier": "com.givisiez.gofinances"
     }
   },
   "name": "gofinances",
