@@ -147,21 +147,21 @@ export function Resume(){
             }}
           >
 
+          <MonthSelect>
+            <MonthSelectButton onPress={() => handleDataChange('prev')}>
+              <MonthSelectIcon name="chevron-left"/>        
+            </MonthSelectButton>
+
+            <Month>{ format(selectedDate, 'MMMM, yyyy', { locale: ptBR }) }</Month>
+
+            <MonthSelectButton onPress={() => handleDataChange('next')}>
+              <MonthSelectIcon name="chevron-right"/>        
+            </MonthSelectButton>
+          </MonthSelect>
+
           {
             totalByCategories.length > 0 ?
               <>
-                <MonthSelect>
-                  <MonthSelectButton onPress={() => handleDataChange('prev')}>
-                    <MonthSelectIcon name="chevron-left"/>        
-                  </MonthSelectButton>
-
-                  <Month>{ format(selectedDate, 'MMMM, yyyy', { locale: ptBR }) }</Month>
-
-                  <MonthSelectButton onPress={() => handleDataChange('next')}>
-                    <MonthSelectIcon name="chevron-right"/>        
-                  </MonthSelectButton>
-                </MonthSelect>
-
                 <ChartContainer>
                   <VictoryPie
                     data={totalByCategories}
